@@ -1,30 +1,39 @@
 package com.keee.inventario.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.Date;
 
 @Entity
-@Table(name = "kUser")
+@Table(name = "invoices")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String email;
-    private String picture;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    private Role rol;
+    private Date date;
+    private double total;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
 }
