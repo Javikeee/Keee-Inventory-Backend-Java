@@ -1,39 +1,39 @@
-package com.keee.inventario.model;
+package com.keee.inventario.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.Date;
 
 @Entity
-@Table(name = "products")
+@Table(name = "invoices")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String description;
-    private int stockNow;
-    private int stockMinimum;
-    private double price;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private Date date;
+    private double total;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
 }

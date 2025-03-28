@@ -1,39 +1,33 @@
-package com.keee.inventario.model;
+package com.keee.inventario.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "invoices")
+@Table(name = "clients")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Invoice {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    private String name;
+    private String email;
+    private String telephone;
 
-    private Date date;
-    private double total;
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Order> orders;
 }

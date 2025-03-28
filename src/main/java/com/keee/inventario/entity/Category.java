@@ -1,4 +1,4 @@
-package com.keee.inventario.model;
+package com.keee.inventario.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

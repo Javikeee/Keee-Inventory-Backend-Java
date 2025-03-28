@@ -1,4 +1,4 @@
-package com.keee.inventario.model;
+package com.keee.inventario.entity;
 
 import lombok.Getter;
 import org.springframework.context.i18n.LocaleContextHolder;
