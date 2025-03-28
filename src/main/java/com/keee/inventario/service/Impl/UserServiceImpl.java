@@ -1,4 +1,4 @@
-package com.keee.inventario.service.Impl;
+package com.keee.inventario.service.impl;
 
 public class UserServiceImpl {
 }
