@@ -11,7 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,11 +28,24 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @NotBlank(message = "Company name is required")
+    private String companyName;
+
+    @NotBlank(message = "Contact name is required")
     private String contactName;
+
+    @NotBlank(message = "Telephone is required")
     private String telephone;
+
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
 
+    // Con @Builder.Default, si no se settea 'isActive' en el builder, se asigna 'true'
+    @Builder.Default
+    private boolean isActive = true;
+
     @OneToMany(mappedBy = "suppliers", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
+
 }
