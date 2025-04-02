@@ -66,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
     public String deleteCategory(Long id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
-            return "Categoría eliminada correctamente.";
+            return "category.deleted";
         } else {
             throw new ResourceNotFoundException("No se puede eliminar: La categoría con ID " + id + " no existe.");
         }
