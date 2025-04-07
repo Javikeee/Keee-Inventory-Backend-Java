@@ -1,9 +1,12 @@
 package com.keee.inventario.controller;
 
+import com.keee.inventario.controller.entity.ApiResponse;
 import com.keee.inventario.dto.CategoryDTO;
-import com.keee.inventario.entity.Category;
+import com.keee.inventario.dto.CategoryRequestDTO;
+import com.keee.inventario.dto.CategoryResponseDTO;
 import com.keee.inventario.helper.MessageHelper;
 import com.keee.inventario.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,61 +22,94 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final MessageHelper messageHelper;
 
+    /**
+     * Method to get all the categories
+     *
+     * @param language
+     * @return
+     */
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public ResponseEntity<ApiResponse<List<CategoryResponseDTO>>> getAllCategories(@RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+        Locale locale = Locale.forLanguageTag(language);
+        List<CategoryResponseDTO> suppliers = categoryService.getAllCategories();
+        String message = messageHelper.getMessage("category.list", locale);
+        return ResponseEntity.ok(new ApiResponse<>(message, suppliers));
     }
 
+    /**
+     * Method to get a category
+     *
+     * @param id
+     * @param language
+     * @return
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        return categoryService.getCategoryById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> getCategoryById(@PathVariable Long id, @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+        Locale locale = Locale.forLanguageTag(language);
+        CategoryResponseDTO categoryResponseDTO = categoryService.getCategoryById(id, locale);
+        String message = messageHelper.getMessage("category.found", locale);
+        return ResponseEntity.ok(new ApiResponse<>(message, categoryResponseDTO));
     }
 
+    /**
+     * Method to create a new category
+     *
+     * @param categoryRequestDTO
+     * @param language
+     * @return
+     */
     @PostMapping
-    public ResponseEntity<String> createCategory(
-            @RequestBody CategoryDTO categoryDTO,
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> createCategory(
+            @RequestBody  @Valid CategoryRequestDTO categoryRequestDTO,
             @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
 
-        categoryService.createCategory(categoryDTO);
         Locale locale = Locale.forLanguageTag(language);
+        CategoryResponseDTO createdSupplier = categoryService.createCategory(categoryRequestDTO);
         String message = messageHelper.getMessage("category.created", locale);
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(new ApiResponse<>(message, createdSupplier));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateCategory(
+    /**
+     * Method to change category status
+     *
+     * Una categoria nunca podrá ser borrada, solo dado de baja, ya que eliminar  supone
+     * perder información de productos. Y no queremos perder esta informacion
+     *
+     * @param id
+     * @param isActive
+     * @param language
+     * @return
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> changeCategoryStatus(
             @PathVariable Long id,
-            @RequestBody CategoryDTO categoryDTO,
+            @RequestParam boolean isActive,
             @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
 
-        categoryService.updateCategory(id, categoryDTO);
         Locale locale = Locale.forLanguageTag(language);
-        String message = messageHelper.getMessage("category.updated", locale);
-        return ResponseEntity.ok(message);
+        CategoryResponseDTO updatedCategory = categoryService.changeCategoryStatus(id, isActive);
+        String messageKey = isActive ? "category.activated" : "category.deactivated";
+        String message = messageHelper.getMessage(messageKey, locale);
+        return ResponseEntity.ok(new ApiResponse<>(message, updatedCategory));
     }
 
+    /**
+     * Method to update category info
+     *
+     * @param id
+     * @param categoryDTO
+     * @param language
+     * @return
+     */
     @PatchMapping("/{id}")
-    public ResponseEntity<String> patchCategory(
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> updateCategory(
             @PathVariable Long id,
-            @RequestBody CategoryDTO categoryDTO,
+            @RequestBody @Valid CategoryDTO categoryDTO,
             @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
 
-        categoryService.patchCategory(id, categoryDTO);
         Locale locale = Locale.forLanguageTag(language);
+        CategoryResponseDTO updatedCategory = categoryService.updateCategoryPartial(id, categoryDTO);
         String message = messageHelper.getMessage("category.updated", locale);
-        return ResponseEntity.ok(message);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory(
-            @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
-
-        String resultMessage = categoryService.deleteCategory(id);
-        Locale locale = Locale.forLanguageTag(language);
-        String message = messageHelper.getMessage(resultMessage, locale);
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(new ApiResponse<>(message, updatedCategory));
     }
 }

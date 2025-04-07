@@ -1,23 +1,22 @@
 package com.keee.inventario.service;
 
 import com.keee.inventario.dto.CategoryDTO;
-import com.keee.inventario.entity.Category;
+import com.keee.inventario.dto.CategoryRequestDTO;
+import com.keee.inventario.dto.CategoryResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 
 public interface CategoryService {
 
-    List<Category> getAllCategories();
+    List<CategoryResponseDTO> getAllCategories();
 
-    Optional<Category> getCategoryById(Long id);
+    CategoryResponseDTO getCategoryById(Long id, Locale locale);
 
-    Category createCategory(CategoryDTO categoryDTO);
+    CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO);
 
-    Category updateCategory(Long id, CategoryDTO categoryDTO);
+    CategoryResponseDTO updateCategoryPartial(Long id, CategoryDTO categoryRequestDTO);
 
-    Category patchCategory(Long id, CategoryDTO categoryDTO);
-
-    String deleteCategory(Long id);
+    CategoryResponseDTO changeCategoryStatus(Long id, boolean isActive);
 
 }
