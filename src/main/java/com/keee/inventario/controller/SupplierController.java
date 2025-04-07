@@ -29,7 +29,9 @@ public class SupplierController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<SupplierResponseDTO>>> getAllSuppliers(@RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+    public ResponseEntity<ApiResponse<List<SupplierResponseDTO>>> getAllSuppliers(
+            @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+
         Locale locale = Locale.forLanguageTag(language);
         List<SupplierResponseDTO> suppliers = supplierService.getAllSuppliers();
         String message = messageHelper.getMessage("supplier.list", locale);
@@ -44,14 +46,14 @@ public class SupplierController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<SupplierResponseDTO>> getSupplierById(@PathVariable Long id, @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+    public ResponseEntity<ApiResponse<SupplierResponseDTO>> getSupplierById(
+            @PathVariable Long id,
+            @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+
         Locale locale = Locale.forLanguageTag(language);
-        return supplierService.getSupplierById(id)
-                .map(supplier -> {
-                    String message = messageHelper.getMessage("supplier.found", locale);
-                    return ResponseEntity.ok(new ApiResponse<>(message, supplier));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        SupplierResponseDTO supplierResponseDTO = supplierService.getSupplierById(id, locale);
+        String message = messageHelper.getMessage("supplier.found", locale);
+        return ResponseEntity.ok(new ApiResponse<>(message, supplierResponseDTO));
     }
 
     /**
@@ -62,7 +64,10 @@ public class SupplierController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<SupplierResponseDTO>> createSupplier(@RequestBody @Valid SupplierRequestDTO supplierRequestDTO, @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+    public ResponseEntity<ApiResponse<SupplierResponseDTO>> createSupplier(
+            @RequestBody @Valid SupplierRequestDTO supplierRequestDTO,
+            @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+
         Locale locale = Locale.forLanguageTag(language);
         SupplierResponseDTO createdSupplier = supplierService.createSupplier(supplierRequestDTO);
         String message = messageHelper.getMessage("supplier.created", locale);
@@ -82,7 +87,11 @@ public class SupplierController {
      * @return
      */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ApiResponse<SupplierResponseDTO>> changeSupplierStatus(@PathVariable Long id, @RequestParam boolean isActive, @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+    public ResponseEntity<ApiResponse<SupplierResponseDTO>> changeSupplierStatus(
+            @PathVariable Long id,
+            @RequestParam boolean isActive,
+            @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+
         Locale locale = Locale.forLanguageTag(language);
         SupplierResponseDTO updatedSupplier = supplierService.changeSupplierStatus(id, isActive);
         String messageKey = isActive ? "supplier.activated" : "supplier.deactivated";
@@ -99,7 +108,11 @@ public class SupplierController {
      * @return
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse<SupplierResponseDTO>> updateSupplier(@PathVariable Long id, @RequestBody @Valid SupplierDTO supplierDTO, @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+    public ResponseEntity<ApiResponse<SupplierResponseDTO>> updateSupplier(
+            @PathVariable Long id,
+            @RequestBody @Valid SupplierDTO supplierDTO,
+            @RequestHeader(value = "Accept-Language", defaultValue = "en") String language) {
+
         Locale locale = Locale.forLanguageTag(language);
         SupplierResponseDTO updatedSupplier = supplierService.updateSupplierPartial(id, supplierDTO);
         String message = messageHelper.getMessage("supplier.updated", locale);

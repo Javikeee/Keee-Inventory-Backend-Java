@@ -5,15 +5,15 @@ import com.keee.inventario.dto.SupplierRequestDTO;
 import com.keee.inventario.dto.SupplierResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 
 public interface SupplierService {
 
-    SupplierResponseDTO createSupplier(SupplierRequestDTO supplierRequestDTO);
-
-    Optional<SupplierResponseDTO> getSupplierById(Long id);
-
     List<SupplierResponseDTO> getAllSuppliers();
+
+    SupplierResponseDTO getSupplierById(Long id, Locale locale);
+
+    SupplierResponseDTO createSupplier(SupplierRequestDTO supplierRequestDTO);
 
     SupplierResponseDTO updateSupplierPartial(Long id, SupplierDTO supplierDTO);
 

@@ -1,5 +1,6 @@
 package com.keee.inventario.mapper;
 
+import com.keee.inventario.dto.SupplierDTO;
 import com.keee.inventario.dto.SupplierRequestDTO;
 import com.keee.inventario.dto.SupplierResponseDTO;
 import com.keee.inventario.entity.Supplier;
@@ -26,6 +27,17 @@ public class SupplierMapper {
                 .email(supplier.getEmail())
                 .isActive(supplier.isActive())
                 .build();
-
     }
+
+    public SupplierDTO entityToDto(Supplier supplier) {
+        return SupplierDTO.builder()
+                .id(supplier.getId())
+                .companyName(supplier.getCompanyName())
+                .contactName(supplier.getContactName())
+                .telephone(supplier.getTelephone())
+                .email(supplier.getEmail())
+                .isActive(supplier.isActive())
+                .build();
+    }
+
 }

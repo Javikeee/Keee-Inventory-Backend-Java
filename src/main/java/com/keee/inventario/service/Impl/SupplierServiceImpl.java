@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,9 +37,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Optional<SupplierResponseDTO> getSupplierById(Long id) {
+    public SupplierResponseDTO getSupplierById(Long id, Locale locale) {
         return supplierRepository.findById(id)
-                .map(supplierMapper::entityToResponseDto);
+                .map(supplierMapper::entityToResponseDto)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        messageHelper.getMessage("supplier.error.not_found", locale) + " " + id
+                ));
     }
 
     @Override
