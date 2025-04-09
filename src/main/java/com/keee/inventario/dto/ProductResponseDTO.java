@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ProductResponseDTO {
+
     private Long id;
     private String name;
     private String description;
@@ -14,4 +15,5 @@ public class ProductResponseDTO {
     private double price;
     private CategoryDTO category;
     private SupplierDTO supplier;
+
 }

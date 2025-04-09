@@ -1,6 +1,8 @@
 package com.keee.inventario.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,7 +16,8 @@ public class ProductRequestDTO {
     @NotEmpty(message = "Description cannot be empty")
     private String description;
 
-    @NotEmpty(message = "Stock minimum cannot be empty")
+    @NotNull(message = "Stock minimum cannot be empty")
+    @Min(1)
     private int stockMinimum;
 
     @NotEmpty(message = "Price cannot be empty")

@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
                     .map(categoryMapper::entityToResponseDto)
                     .collect(Collectors.toList());
         } catch (DataAccessException e) {
-            throw new RuntimeException(messageHelper.getMessage("supplier.error.fetch", Locale.getDefault()), e);
+            throw new RuntimeException(messageHelper.getMessage("category.error.fetch", Locale.getDefault()), e);
         }
     }
 
@@ -83,7 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
                     return categoryMapper.entityToResponseDto(updatedCategory);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        messageHelper.getMessage("supplier.error.not_found", Locale.getDefault()) + id));
+                        messageHelper.getMessage("category.error.not_found", Locale.getDefault()) + id));
     }
 
 

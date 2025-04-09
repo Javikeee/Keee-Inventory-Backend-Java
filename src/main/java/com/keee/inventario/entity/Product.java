@@ -36,4 +36,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
+
+    private boolean active = true;
 }
