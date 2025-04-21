@@ -4,7 +4,11 @@ import com.keee.inventario.dto.SupplierDTO;
 import com.keee.inventario.dto.SupplierRequestDTO;
 import com.keee.inventario.dto.SupplierResponseDTO;
 import com.keee.inventario.entity.Supplier;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class SupplierMapper {
 
     public Supplier requestDtoToEntity(SupplierRequestDTO supplierRequestDTO) {

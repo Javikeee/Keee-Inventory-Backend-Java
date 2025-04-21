@@ -45,7 +45,7 @@ public class Supplier {
     @Builder.Default
     private boolean isActive = true;
 
-    @OneToMany(mappedBy = "suppliers", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
 }
