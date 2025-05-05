@@ -27,13 +27,15 @@ public class Invoice {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     private Date date;
     private double total;
+    private String invoiceNumber;
+    private String pdfUrl;
+    private String notes;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
+    private InvoiceStatus status;
 }
